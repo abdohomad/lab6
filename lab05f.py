@@ -1,65 +1,115 @@
 ########################################################################
 ##
-## CS 101 Lab
+# CS 101 Lab
 ## Program #
-## Name
-## Email
+# Name
+# Email
 ##
-## PROBLEM : Describe the problem
+# PROBLEM : Describe the problem
 ##
-## ALGORITHM : 
-##      1. Write out the algorithm
-## 
-## ERROR HANDLING:
-##      Any Special Error handling to be noted.  Wager not less than 0. etc
+# ALGORITHM :
+# 1. Write out the algorithm
 ##
-## OTHER COMMENTS:
-##      Any special comments
+# ERROR HANDLING:
+# Any Special Error handling to be noted.  Wager not less than 0. etc
+##
+# OTHER COMMENTS:
+# Any special comments
 ##
 ########################################################################
 
 
 # import statements
-
+from ast import While
 # functions
-def valid_user_input(string_input):
-    while true:
-        if len(string_input) != 10:
-            print ("Libray card is invalid")
-        elif len(string_input) == 10:
-            for i in range(0, 5):
-                if not(string_input[i].isupper()):
-                    print ("Libray card is invalid")
-
-            for i in range(len(string_input)):
-                if not (string_input[5] == 1 or string_input[5] == 2 or string_input[5] == 3):
-                    print ("Libray card is invalid")
-                elif not (string_input[6] == 1 or string_input[6] == 2 or string_input[6] == 3 or string_input[6] == 4):
-                    print ("Libray card is invalid")
-
-            for i in range(string_input[7:9]):
-                if not(string_input[i] == range(0, 9)):
-                    print ("Libray card is invalid")
-        else:
-
-            return string_input
-
-def check_digit():
-
-    user_input = input("Enter Library Card. Hit Enter to EXit")
-
-    user_input = valid_user_input(user_input)
 
 
-def get_school():
+def validate_user_input(user_input):
+
+    if len(user_input) != 10:
+        return (False, "Library card is invalid.\nThe length of the number given must be 10")
+    if len(user_input) == 10:
+        # check first five characters
+        for i in range(5):
+            if (user_input[i] < chr(65) or user_input[i] > chr(91)):
+                return (False, "Library card is invalid.\nThe first 5 characters must be A-Z, the invalid character is at index "
+                        + str(i) + " is " + user_input[i])
+            # check character at index 5
+        if (user_input[5] != '1' and user_input[5] != '2' and user_input[5] != '3'):
+            return (False, "Library card is invalid.\nThe sixth character must be 1,2 or 3")
+        if not (user_input[6] == '1' or user_input[6] <= '4'):
+            return (False, "Library card is invalid.\nThe seven character must be 1,2,3 or 4")
+        for i in range(7, 10):
+            # check charactersn at index 7-9
+            if user_input[i] < '0' or user_input[i] > '9':
+                return (False, "Library card is invalid.\nThe last 3 characters must be 0-9, the invalid character is at index "
+                        + str(i) + " is " + user_input[i])
+        calculated_value = check_digit(user_input)
+        given_value = int(user_input[9])
+
+        if given_value != calculated_value:
+            message = "Check digit " + str(given_value) + " does not match calculated value " \
+                + str(calculated_value)
+            return (False, message)
+    return (True, "Library card is valid.")
 
 
-def get_grade():
+def check_digit(user_input):
+    sum = 0
+    for i in range(len(user_input)):
+        value = character_value(user_input[i])
+        sum += value * (i+1)
+    return sum % 10
+
+
+def get_school(user_input):
+    if user_input[5] == '1':
+        return "School of Computing and Engineering SCE"
+    elif user_input[5] == '2':
+        return "School of Law"
+    elif user_input[5] == '3':
+        return "College of Arts and Sciences"
+    else:
+        return "Invalid School"
+
+
+def get_grade(user_input):
+    if user_input[6] == '1':
+        return "Freshman"
+    elif user_input[6] == '2':
+        return "Sophomore"
+    elif user_input[6] == '3':
+        return "Junior"
+    elif user_input[6] == '4':
+        return "Senior"
+    else:
+        return "Invalid Grade"
+
+
+def character_value(char):
+    value = ord(char)
+    if (value >= 48 and value <= 57):
+        return value - 48
+    elif (value >= 65 and value <= 90):
+        return value - 65
 
 
 if __name__ == "__main__":
 
-    # main program
-    check_digit()
     print("Main Program")
+    user_input = "1"
+    while (user_input.strip()):
+        user_input = input("Enter Library Card. Hit Enter to Exit ==> ")
+        (is_valid, message) = validate_user_input(user_input)
 
+        if is_valid == True:
+            digit = check_digit(user_input)
+            school = get_school(user_input)
+            grade = get_grade(user_input)
+            print(message)
+            print("The card belongs to a student in " +
+                  school)
+            print("The card belongs to a " + grade)
+
+        else:
+            print(message)
