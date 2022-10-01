@@ -25,7 +25,8 @@ from ast import While
 
 
 def validate_user_input(user_input):
-
+    if not (user_input.strip()):
+        quit()
     if len(user_input) != 10:
         return (False, "Library card is invalid.\nThe length of the number given must be 10")
     if len(user_input) == 10:
