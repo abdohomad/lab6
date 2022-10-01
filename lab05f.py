@@ -2,8 +2,8 @@
 ##
 # CS 101 Lab
 ## Program #
-# Name
-# Email
+# Name ABDALRAHMAN BASHIR
+# Email bhbf73@umsystem.edu
 ##
 # PROBLEM : Describe the problem
 ##
@@ -63,6 +63,7 @@ def check_digit(user_input):
 
 
 def get_school(user_input):
+    """"Assing index 5 to it respective school based on the value at that index """
     if user_input[5] == '1':
         return "School of Computing and Engineering SCE"
     elif user_input[5] == '2':
@@ -74,6 +75,8 @@ def get_school(user_input):
 
 
 def get_grade(user_input):
+    """"Assing index 6 to it respective school-year based on the value at that index """
+
     if user_input[6] == '1':
         return "Freshman"
     elif user_input[6] == '2':
@@ -99,10 +102,14 @@ if __name__ == "__main__":
     print("Main Program")
     user_input = "1"
     while (user_input.strip()):
+        """main program will keep looping until until user_input is empty or whitespace"""
         user_input = input("Enter Library Card. Hit Enter to Exit ==> ")
         (is_valid, message) = validate_user_input(user_input)
 
+        # if the return value from validate_user_input is true
+        # then the functions check_digit, get_school get_grade will invoke.
         if is_valid == True:
+
             digit = check_digit(user_input)
             school = get_school(user_input)
             grade = get_grade(user_input)
@@ -111,5 +118,5 @@ if __name__ == "__main__":
                   school)
             print("The card belongs to a " + grade)
 
-        else:
+        else:  # Otherwhise raise an Error and aske for valid input again
             print(message)
